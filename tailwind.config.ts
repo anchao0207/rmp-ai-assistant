@@ -15,6 +15,8 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('preline/plugin')
+  ],
 };
 export default config;

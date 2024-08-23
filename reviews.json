@@ -1,0 +1,124 @@
+{
+  "reviews": [
+    {
+      "professor": "Dr. Alice Johnson",
+      "subject": "Calculus I",
+      "stars": 5,
+      "review": "Dr. Johnson explains complex concepts clearly and is always available for extra help. Highly recommend her class!"
+    },
+    {
+      "professor": "Prof. John Smith",
+      "subject": "Introduction to Psychology",
+      "stars": 4,
+      "review": "Interesting lectures and engaging discussions, but the exams can be tough if you're not prepared."
+    },
+    {
+      "professor": "Dr. Maria Gonzalez",
+      "subject": "Organic Chemistry",
+      "stars": 2,
+      "review": "Difficult to follow during lectures, and the lab assignments are overwhelming. Not recommended for beginners."
+    },
+    {
+      "professor": "Prof. Michael Lee",
+      "subject": "World History",
+      "stars": 3,
+      "review": "Provides good insights, but the lectures can be a bit monotonous. Requires a lot of reading."
+    },
+    {
+      "professor": "Dr. Karen Davis",
+      "subject": "Microeconomics",
+      "stars": 5,
+      "review": "Dr. Davis makes economics interesting and relevant. Her examples are very relatable."
+    },
+    {
+      "professor": "Prof. Daniel White",
+      "subject": "Physics I",
+      "stars": 1,
+      "review": "His teaching style is confusing, and he rarely answers emails. The exams are too difficult."
+    },
+    {
+      "professor": "Dr. Emily Brown",
+      "subject": "Sociology of Media",
+      "stars": 4,
+      "review": "Fascinating course material and engaging professor. She encourages a lot of class participation."
+    },
+    {
+      "professor": "Prof. Richard Evans",
+      "subject": "Statistics",
+      "stars": 3,
+      "review": "The lectures are clear, but the problem sets are challenging. You need to stay on top of the material."
+    },
+    {
+      "professor": "Dr. Linda Wilson",
+      "subject": "Philosophy 101",
+      "stars": 4,
+      "review": "Dr. Wilson is passionate about philosophy and always encourages deep thinking. The reading load is heavy."
+    },
+    {
+      "professor": "Prof. James Taylor",
+      "subject": "Computer Science I",
+      "stars": 5,
+      "review": "Great introductory course. Prof. Taylor is very approachable and makes programming fun."
+    },
+    {
+      "professor": "Dr. Samantha Green",
+      "subject": "Environmental Science",
+      "stars": 3,
+      "review": "Interesting topics, but sometimes the lectures lack structure. Field trips are a plus."
+    },
+    {
+      "professor": "Prof. Robert Miller",
+      "subject": "English Literature",
+      "stars": 4,
+      "review": "Prof. Miller is knowledgeable and loves literature. The essays are graded strictly."
+    },
+    {
+      "professor": "Dr. Anna Martinez",
+      "subject": "Biology 101",
+      "stars": 2,
+      "review": "The material is dense and not well-organized. Labs are long and not very informative."
+    },
+    {
+      "professor": "Prof. George Carter",
+      "subject": "Art History",
+      "stars": 5,
+      "review": "Amazing professor! His passion for art history is contagious. Lectures are captivating."
+    },
+    {
+      "professor": "Dr. Jessica Robinson",
+      "subject": "Marketing",
+      "stars": 4,
+      "review": "Practical and insightful course. Dr. Robinson uses real-world examples that are very helpful."
+    },
+    {
+      "professor": "Prof. Thomas Walker",
+      "subject": "Political Science",
+      "stars": 3,
+      "review": "Good course, but sometimes it feels like the discussions go off-topic. Needs more structure."
+    },
+    {
+      "professor": "Dr. Megan Hill",
+      "subject": "Anatomy and Physiology",
+      "stars": 5,
+      "review": "Dr. Hill is an excellent instructor. She makes complex topics understandable and is very supportive."
+    },
+    {
+      "professor": "Prof. Charles King",
+      "subject": "Creative Writing",
+      "stars": 4,
+      "review": "Encourages creativity and gives constructive feedback. Workshops are very helpful."
+    },
+    {
+      "professor": "Dr. Nancy Allen",
+      "subject": "Data Science",
+      "stars": 5,
+      "review": "One of the best courses I’ve taken. Dr. Allen is extremely knowledgeable and helps students grasp tough concepts."
+    },
+    {
+      "professor": "Prof. William Harris",
+      "subject": "Econometrics",
+      "stars": 2,
+      "review": "Difficult course with lots of math. Prof. Harris is knowledgeable but not the best at explaining."
+    }
+  ]
+}
