@@ -11,6 +11,7 @@
   "dependencies": {
     "@pinecone-database/pinecone": "^3.0.1",
     "@vercel/analytics": "^1.3.1",
+    "cheerio": "^1.0.0",
     "next": "14.2.6",
     "openai": "^4.56.0",
     "preline": "^2.4.1",
@@ -18,6 +19,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

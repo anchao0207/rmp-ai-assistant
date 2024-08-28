@@ -1,6 +1,27 @@
 {
   "reviews": [
     {
+      "professor": "Ronald Adams",
+      "subject": "Economics",
+      "stars": 4,
+      "university": "California State University Chico",    
+      "difficulty": 2.4,
+      "ratings": [
+        {
+          "quality": 2.0,
+          "difficulty": 4.0,
+          "course": "ECON101",
+          "review": "This is the most boring class I have taken so far. I never had motivation to go to class and I was fighting to stay awake the whole time. I didn't read any of the books which is probably why I didn't do so well. But definitely turn in your written reports through out the semester to boost your grade. I would not take this professor ever again."
+        },
+        {
+          "quality": 3.5,
+          "difficulty": 3.0,
+          "course": "ECON101",
+          "review": "This class was extremely boring, definitely the most boring class i've taken so far. There are 3 tests and an optional final. His tests are somewhat easy, if you study and the final is just he 3 tests put together. The class is overall easy, its just the lecture that kills you."
+        }
+      ]
+    },
+    {
       "professor": "Dr. Alice Johnson",
       "subject": "Calculus I",
       "stars": 5,
