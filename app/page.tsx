@@ -93,6 +93,12 @@ export default function Home() {
   ]);
   const [message, setMessage] = useState("");
   const [url, setUrl] = useState("");
+  const [criteria, setCriteria] = useState({
+    professor: '',
+    university: '',
+    subject: '',
+    course: '',
+  });
 
   const buttonRef = useRef(null);
 
@@ -111,7 +117,7 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([...messages, { role: "user", content: message }]),
+      body: JSON.stringify({text:[...messages, { role: "user", content: message }], filter: criteria}),
     }).then(async (res) => {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -145,11 +151,11 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ url: url}),
+      body: JSON.stringify({ url: url }),
     }).then((res) => {
-      console.log(res.status)
-  })
-};
+      console.log(res.status);
+    });
+  };
 
   return (
     <div className="relative w-screen h-screen flex flex-col justify-between">
@@ -216,37 +222,138 @@ export default function Home() {
         {/* <!-- Textarea --> */}
         <div className="max-w-4xl mx-auto rounded-2xl px-4 py-4 sm:px-6 lg:px-8 bg-white border-t border-gray-200 dark:bg-neutral-900 dark:border-neutral-700">
           <div className="flex justify-between items-center mb-3">
-            <button
-              type="button"
-              className="inline-flex justify-center items-center gap-x-2 rounded-lg font-medium text-gray-800 hover:text-blue-600 focus:outline-none focus:text-blue-600 text-xs sm:text-sm dark:text-neutral-200 dark:hover:text-blue-500 dark:focus:text-blue-500"
-              onClick={() => {
-                setMessages([
-                  {
-                    role: "assistant",
-                    content:
-                      "Hi! I'm the Rate My Professor support assistant. How can I help you today?",
-                  },
-                ]);
-                setMessage("");
-              }}
-            >
-              <svg
-                className="shrink-0 size-4"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            <div className="hs-dropdown relative inline-flex">
+              <button
+                type="button"
+                className="hs-dropdown-toggle inline-flex justify-center items-center gap-x-2 rounded-lg font-medium text-gray-800 hover:text-blue-600 focus:outline-none focus:text-blue-600 text-xs sm:text-sm dark:text-neutral-200 dark:hover:text-blue-500 dark:focus:text-blue-500"
+                aria-haspopup="dialog"
+                aria-expanded="false"
+                aria-controls="hs-scale-animation-modal"
+                data-hs-overlay="#hs-scale-animation-modal"
+                // onClick={() => {
+                //   setMessages([
+                //     {
+                //       role: "assistant",
+                //       content:
+                //         "Hi! I'm the Rate My Professor support assistant. How can I help you today?",
+                //     },
+                //   ]);
+                //   setMessage("");
+                // }}
               >
-                <path d="M5 12h14" />
-                <path d="M12 5v14" />
-              </svg>
-              New chat
-            </button>
+                <svg
+                  className="shrink-0 size-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14" />
+                  <path d="M12 5v14" />
+                </svg>
+                Criteria
+              <div className="font-medium text-xs italic">Filtering:{' '}
+                {Object.keys(criteria).map((key) => {
+                  if (criteria[key]) {
+                    return `${key}: ${criteria[key]} `
+                  }
+                }
+                )}
+                </div>
+              </button>
+              <div
+                id="hs-scale-animation-modal"
+                className="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none"
+                role="dialog"
+                tabIndex="-1"
+                aria-labelledby="hs-scale-animation-modal-label"
+              >
+                <div className="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
+                  <div className="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                    <div className="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
+                      <h3
+                        id="hs-scale-animation-modal-label"
+                        className="font-bold text-gray-800 dark:text-white"
+                      >
+                        Filter search
+                      </h3>
+                      <button
+                        type="button"
+                        className="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600"
+                        aria-label="Close"
+                        data-hs-overlay="#hs-scale-animation-modal"
+                      >
+                        <span className="sr-only">Close</span>
+                        <svg
+                          className="shrink-0 size-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M18 6 6 18"></path>
+                          <path d="m6 6 12 12"></path>
+                        </svg>
+                      </button>
+                    </div>
+                    <div className="p-4 overflow-y-auto">
+                      <p className="mt-1 text-gray-800 dark:text-neutral-400">
+                        Please enter the filter values you want to search within the context. You can leave the other fields blank.
+                      </p>
+                    </div>
+                    <div className="p-4 space-y-3">
+                      <input
+                        type="text"
+                        className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                        placeholder="Professor"
+                        value={criteria.professor}
+                        onChange={(e) => setCriteria({ ...criteria, professor: e.target.value })}
+                      />
+                      <input
+                        type="text"
+                        className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                        placeholder="University"
+                        value={criteria.university}
+                        onChange={(e) => setCriteria({ ...criteria, university: e.target.value })}
+                      />
+                      <input
+                        type="text"
+                        className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                        placeholder="Subject"
+                        value={criteria.subject}
+                        onChange={(e) => setCriteria({ ...criteria, subject: e.target.value })}
+                      />
+                      <input
+                        type="text"
+                        className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                        placeholder="Course"
+                        value={criteria.course}
+                        onChange={(e) => setCriteria({ ...criteria, course: e.target.value })}
+                      />
+                    </div>
+                    <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
+                      <button
+                        type="button"
+                        className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                        data-hs-overlay="#hs-scale-animation-modal"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <button
               type="button"
@@ -320,26 +427,26 @@ export default function Home() {
                     </p>
                   </div>
                   <div className="p-4 pt-0">
-                      <input
-                        id="hs-content-for-copy"
-                        type="url"
-                        pattern="https://www.ratemyprofessors.com/professor/[0-9]+"
-                        className="peer [.validated_&]:invalid:border-pink-600 [.validated_&]:invalid:ring-2 [.validated_&]:invalid:ring-pink-200 text-gray-800 dark:text-neutral-400 bg-white dark:bg-neutral-600 py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-                        placeholder="Enter Url"
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                        required
-                      />
-                      <span className="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
-                        Please enter a valid url from{" "}
-                        <Link
-                          className="hover:underline"
-                          target="_blank"
-                          href="https://www.ratemyprofessors.com/"
-                        >
-                          https://www.ratemyprofessors.com/
-                        </Link>
-                      </span>
+                    <input
+                      id="hs-content-for-copy"
+                      type="url"
+                      pattern="https://www.ratemyprofessors.com/professor/[0-9]+"
+                      className="peer [.validated_&]:invalid:border-pink-600 [.validated_&]:invalid:ring-2 [.validated_&]:invalid:ring-pink-200 text-gray-800 dark:text-neutral-400 bg-white dark:bg-neutral-600 py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                      placeholder="Enter Url"
+                      value={url}
+                      onChange={(e) => setUrl(e.target.value)}
+                      required
+                    />
+                    <span className="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
+                      Please enter a valid url from{" "}
+                      <Link
+                        className="hover:underline"
+                        target="_blank"
+                        href="https://www.ratemyprofessors.com/"
+                      >
+                        https://www.ratemyprofessors.com/
+                      </Link>
+                    </span>
                   </div>
 
                   <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">

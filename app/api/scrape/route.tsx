@@ -3,13 +3,11 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import OpenAI from "openai";
 
 const cheerio = require("cheerio");
-const {createHash} = require("crypto");
-
+const { createHash } = require("crypto");
 function hash(string) {
-    return createHash("sha256").update(string).digest("hex");
+  return createHash("sha256").update(string).digest("hex");
 }
 export async function POST(request: Request) {
-
   const data = await request.json();
   const pc = new Pinecone({
     apiKey: process.env.PINECONE_API_KEY as string,
@@ -28,6 +26,7 @@ export async function POST(request: Request) {
       .text()
       .replace("department", "")
       .trim(),
+    university: $(".NameTitle__Title-dowf0z-1").find("a:last").text().trim(),
     stars: Math.round($(".RatingValue__Numerator-qw8sqy-2").text().trim()),
     difficulty: parseFloat(
       $(".FeedbackItem__FeedbackNumber-uof32n-1").text().trim()
@@ -79,8 +78,9 @@ export async function POST(request: Request) {
           stars: info.stars,
           review: review.review,
           professor: info.professor,
+          university: info.university,
           course: review.course,
-          difficulty: review.difficulty
+          difficulty: review.difficulty,
         },
       };
     })
@@ -88,9 +88,10 @@ export async function POST(request: Request) {
     .then(async (results) => {
       console.log("Successfully embedded data");
       try {
-        await index.upsert(results).then( () => {
+        await index.upsert(results).then(() => {
           console.log("Successfully upserted data");
-        })
+          return new NextResponse("Success", { status: 200 });
+        });
       } catch (upsertError) {
         console.error("Failed to upsert data", upsertError);
       }
@@ -99,5 +100,5 @@ export async function POST(request: Request) {
       console.error("Failed to embed data", err);
     });
 
-  return new NextResponse("Success", { status: 200 });
+  return new NextResponse("Failed", { status: 500 });
 }

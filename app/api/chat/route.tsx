@@ -71,42 +71,78 @@ While these professors may not be exclusively known for pop quizzes, their teach
 Don't give irrelevant information. Always strive to provide accurate and helpful recommendations that best match the student's needs. Give the response in Markdown Format.
 `;
 
+function clean(obj) {
+  for (var propName in obj) {
+    if (obj[propName] === null || obj[propName] === undefined || obj[propName] === "") {
+      delete obj[propName];
+    } else {
+      obj[propName] = {
+        '$eq': obj[propName]
+      }
+    }
+  }
+
+  return obj
+}
+
 export async function POST(request: Request) {
+
   const data = await request.json();
+  const filter = clean({
+    'professor': data.filter.professor,
+    'subject': data.filter.subject,
+    'course': data.filter.course,
+    'university': data.filter.university
+  })
+  console.log(filter)
   const pc = new Pinecone({
     apiKey: process.env.PINECONE_API_KEY as string,
   });
-  const index = pc.Index("rag").namespace("ns1");
+  const index = pc.Index("rag").namespace("professor_reviews");
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY as string,
   });
-  const text = data[data.length - 1].content;
+  const text = data.text[data.text.length - 1].content;
+
   const embedding = await openai.embeddings.create({
     model: "text-embedding-3-small",
     input: text,
     encoding_format: "float",
   });
-  const results = await index.query({
-    topK: 3,
-    includeMetadata: true,
-    vector: embedding.data[0].embedding,
-  });
+
+  var results
+
+  if (Object.keys(filter).length > 0) {
+    results = await index.query({
+      topK: 3,
+      includeMetadata: true,
+      filter: filter,
+      vector: embedding.data[0].embedding,
+    })
+  } else {
+    results = await index.query({
+      topK: 3,
+      includeMetadata: true,
+      vector: embedding.data[0].embedding,
+    })
+  }
 
   let resultString =
     "\n\nReturned results from vector db (done automatically): ";
   results.matches.forEach((match) => {
     resultString += `\n
-        Professor: ${match.id}
+        Professor: ${match.metadata.professor}
         Review: ${match.metadata.review}
         Subject: ${match.metadata.subject}
         Stars: ${match.metadata.stars}
         \n\n
     `;
   });
+  
 
-  const lastMessage = data[data.length - 1];
+  const lastMessage = data.text[data.text.length - 1];
   const lastMessageContent = lastMessage.content + resultString;
-  const lastDataWithoutLastMessage = data.slice(0, data.length - 1);
+  const lastDataWithoutLastMessage = data.text.slice(0, data.text.length - 1);
   const completion = await openai.chat.completions.create({
     messages: [
       { role: "system", content: systemPrompt },
@@ -117,7 +153,6 @@ export async function POST(request: Request) {
     stream: true,
   });
 
-
   const stream = new ReadableStream({
     async start(controller) {
       const encoder = new TextEncoder();
@@ -125,7 +160,6 @@ export async function POST(request: Request) {
         for await (const chunk of completion) {
           const content = chunk.choices[0]?.delta?.content;
           if (content) {
-            // console.log(content)
             const text = encoder.encode(content);
             controller.enqueue(text);
           }
