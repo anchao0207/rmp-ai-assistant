@@ -4,7 +4,7 @@ import OpenAI from "openai";
 
 const cheerio = require("cheerio");
 const { createHash } = require("crypto");
-function hash(string) {
+function hash(string : String) {
   return createHash("sha256").update(string).digest("hex");
 }
 export async function POST(request: Request) {
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   const response = await fetch(data.url);
   const html = await response.text();
   const $ = cheerio.load(html);
-  const info = {
+  const info : { professor: string, subject: string, university: string, stars: number, difficulty: number, ratings: {[key:string]:string}[]} = {
     professor: $(".NameTitle__Name-dowf0z-0").text().trim(),
     subject: $(".TeacherDepartment__StyledDepartmentLink-fl79e8-0")
       .text()
@@ -31,21 +31,14 @@ export async function POST(request: Request) {
     difficulty: parseFloat(
       $(".FeedbackItem__FeedbackNumber-uof32n-1").text().trim()
     ),
-    ratings: [
-      // {
-      //     "quality": 3.5,
-      //     "difficulty": 3.0,
-      //     "course": "ECON101",
-      //     "review": $('.FeedbackItem__FeedbackText-uof32n-0').text().trim()
-      // }
-    ],
+    ratings: [],
   };
 
-  $(".Rating__RatingBody-sc-1rhvpxz-0").map(function () {
-    let dict = {};
+  $(".Rating__RatingBody-sc-1rhvpxz-0").map(function (this: Object) {
+    let dict : {[key: string]: string | never}  = {};
     $(this)
       .find(".fVETNc")
-      .map(function () {
+      .map(function (this:Object) {
         dict[$(this).text().trim().toLowerCase()] = $(this)
           .next()
           .text()

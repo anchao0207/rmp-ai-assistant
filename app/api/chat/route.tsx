@@ -32,16 +32,19 @@ Here are three statistics professors known for being approachable and helpful ba
 1. **Dr. Alice Johnson**
    - **Subject:** Calculus I (which often includes foundational concepts relevant to statistics)  
    - **Rating:** ⭐⭐⭐⭐⭐ (5 stars)  
+   - **Course:** CAL101
    - **Review:** Dr. Johnson is highly praised for her ability to explain complex concepts clearly. She is always available for extra help and is known for her supportive teaching style.
 
 2. **Professor Mark Stevens**
    - **Subject:** Introduction to Statistics  
    - **Rating:** ⭐⭐⭐⭐ (4 stars) (not in the returned results but a common suggestion)  
+   - **Course:** STAT101
    - **Review:** Students appreciate Prof. Stevens for his friendly manner and encouraging approach. He answers questions thoughtfully and promotes a collaborative learning environment.
 
 3. **Professor Jane Doe**
    - **Subject:** Applied Statistics  
    - **Rating:** ⭐⭐⭐⭐½ (4.5 stars) (again, a common suggestion)  
+   - **Course:** STAT201
    - **Review:** Prof. Doe is known for her engaging lectures and willingness to assist students outside of class. Many students rave about her clarity in teaching statistical concepts.
 
 These professors are recognized for their approachable nature and helpfulness. If you need more specific information or further recommendations, feel free to ask!
@@ -54,24 +57,25 @@ Student Query: "I'm interested in finding a professor who is known for giving po
 
 Based on your interest in finding a professor who enjoys giving pop quizzes, here are three recommendations:\
 
-1. **Prof. George Carter**
-   - **Subject:** Art History  
-   - **Rating:** ⭐⭐⭐⭐⭐ (5 stars)  
-   - **Review:** Prof. Carter is known for his captivating lectures and engaging teaching style. While the focus is more on lectures, his approach may include frequent assessments to keep students engaged.
+1. Professor Colton Kempton
 
-2. **Dr. Emily Brown**
-   - **Subject:** Sociology of Media  
-   - **Rating:** ⭐⭐⭐⭐ (4 stars)  
-   - **Review:** Dr. Brown encourages a lot of class participation, which often includes spontaneous pop quizzes to encourage attendance and engagement. Students appreciate her fascinating course material.
+- Subject: Biology
+- Rating: ⭐⭐⭐⭐ (4 stars)
+- Review: "Good professor, he talks a lot and sometimes he goes totally out of the subject but he's kind." 
+While students appreciate his approachable nature, it’s noted that his style includes significant content which may imply a heavier homework load.
 
 
-While these professors may not be exclusively known for pop quizzes, their teaching styles include engaging assessments that keep students on their toes. If you need further recommendations or more specific details, feel free to ask!
+2. Professor Jennie Econome
 
-##Final Requirements:
-Don't give irrelevant information. Always strive to provide accurate and helpful recommendations that best match the student's needs. Give the response in Markdown Format.
+- Subject: Human Career Development
+- Rating: ⭐⭐⭐⭐⭐ (5 stars)
+- Review: "The best Professor I have had. She really wants you to do well in college. She doesn't just talk but does a lot of activities and takes time to make sure you know exactly what to do." 
+Her commitment to student success may translate into a structured homework schedule to reinforce learning.
+
+Always strive to provide accurate and helpful recommendations that best match the student's needs.
 `;
 
-function clean(obj) {
+function clean(obj: any) {
   for (var propName in obj) {
     if (obj[propName] === null || obj[propName] === undefined || obj[propName] === "") {
       delete obj[propName];
@@ -94,7 +98,7 @@ export async function POST(request: Request) {
     'course': data.filter.course,
     'university': data.filter.university
   })
-  console.log(filter)
+
   const pc = new Pinecone({
     apiKey: process.env.PINECONE_API_KEY as string,
   });
@@ -110,7 +114,7 @@ export async function POST(request: Request) {
     encoding_format: "float",
   });
 
-  var results
+  var results : any
 
   if (Object.keys(filter).length > 0) {
     results = await index.query({
@@ -127,17 +131,30 @@ export async function POST(request: Request) {
     })
   }
 
+  // console.log(results)
+
   let resultString =
     "\n\nReturned results from vector db (done automatically): ";
-  results.matches.forEach((match) => {
+  results.matches.forEach((match : {
+    metadata: {
+      professor: string;
+      review: string;
+      subject: string;
+      stars: number;
+      course: string;
+    }
+  }) => {
     resultString += `\n
         Professor: ${match.metadata.professor}
         Review: ${match.metadata.review}
         Subject: ${match.metadata.subject}
         Stars: ${match.metadata.stars}
+        Course: ${match.metadata.course}
         \n\n
     `;
   });
+
+  console.log(resultString);
   
 
   const lastMessage = data.text[data.text.length - 1];
