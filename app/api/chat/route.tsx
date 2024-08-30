@@ -154,7 +154,7 @@ export async function POST(request: Request) {
     `;
   });
 
-  console.log(resultString);
+  // console.log(resultString);
   
 
   const lastMessage = data.text[data.text.length - 1];

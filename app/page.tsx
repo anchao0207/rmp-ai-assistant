@@ -137,7 +137,7 @@ export default function Home() {
           const text = decoder.decode(value || new Uint8Array(), {
             stream: true,
           });
-          console.log(String.raw`${text}\n`);
+          // console.log(String.raw`${text}\n`);
           setMessages((messages) => {
             let lastMessage = messages[messages.length - 1];
             let otherMessages = messages.slice(0, messages.length - 1);
